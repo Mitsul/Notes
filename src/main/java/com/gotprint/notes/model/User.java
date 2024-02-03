@@ -1,6 +1,8 @@
 package com.gotprint.notes.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -10,6 +12,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -18,7 +22,7 @@ public class User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @NotBlank
     @Email(message = "Please provide valid mail id")
@@ -37,4 +41,8 @@ public class User{
 
     @UpdateTimestamp
     private Timestamp updatedTimestamp;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user")
+    private List<Note> notes = new ArrayList<>();
 }
